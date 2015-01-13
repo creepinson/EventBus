@@ -6,66 +6,95 @@ import me.xerces.eventbus.event.Event;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Crysk on 12/01/2015.
  */
 public class EventManager {
 
-    private ArrayList<Map.Entry<Class, EventHandle>> eventHandlerList = new ArrayList<Map.Entry<Class, EventHandle>>();
+    private Map<Class<?>, List<EventHandle>> eventHandleMap = new HashMap<>();
 
+    /**
+     * Add an object as an event listener, this method will loop through the objects methods
+     * and if the method has {@link me.xerces.eventbus.annotation.EventHandler} present then it will add it has an Event Handler
+     * @param object the object to register
+     */
     public void addEventListener(Object object)
     {
         for(Method method : object.getClass().getDeclaredMethods())
         {
             if(method.isAnnotationPresent(EventHandler.class))
             {
-                Map.Entry<Class, EventHandle> eventHandleEntry = new AbstractMap.SimpleEntry<Class, EventHandle>(method.getParameterTypes()[0], new EventHandle(method, object));
+                if(eventHandleMap.get(method.getParameterTypes()[0]) != null)
+                {
+                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object));
+                } else {
+                    List<EventHandle> eventHandles = new ArrayList<>();
+                    eventHandles.add(new EventHandle(method, object));
+                }
                 method.setAccessible(true);
-                eventHandlerList.add(eventHandleEntry);
             }
         }
     }
 
+    /**
+     * Add an object as an event listener, this method will loop through the objects methods
+     * and if the method has {@link me.xerces.eventbus.annotation.EventHandler} present then it will add it has an Event Handler
+     * @param object the object to register
+     * @param eventClass the specific event class we want to filter for
+     */
     public void addSpecificEventListener(Object object, Class eventClass)
     {
         for(Method method : object.getClass().getDeclaredMethods())
         {
             if(method.isAnnotationPresent(EventHandler.class) && method.getParameterTypes().length > 0 && method.getParameterTypes()[0].equals(eventClass))
             {
-                Map.Entry<Class, EventHandle> eventHandleEntry = new AbstractMap.SimpleEntry<Class, EventHandle>(method.getParameterTypes()[0], new EventHandle(method, object));
+                if(eventHandleMap.get(method.getParameterTypes()[0]) != null)
+                {
+                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object));
+                } else {
+                    List<EventHandle> eventHandles = new ArrayList<>();
+                    eventHandles.add(new EventHandle(method, object));
+                }
                 method.setAccessible(true);
-                eventHandlerList.add(eventHandleEntry);
             }
         }
     }
 
+    /**
+     * Removes all methods in the object from the {@link #eventHandleMap}
+     * @param object
+     */
     public void removeEventListener(Object object)
     {
-        Iterator<Map.Entry<Class, EventHandle>> iterator = eventHandlerList.iterator();
+        Iterator<Map.Entry<Class<?>, List<EventHandle>>> iterator = eventHandleMap.entrySet().iterator();
         while(iterator.hasNext())
         {
-            Map.Entry<Class, EventHandle> entry = iterator.next();
-            if(entry.getValue().getMethodClass().equals(object))
-                iterator.remove();
+            Map.Entry<Class<?>, List<EventHandle>> entry = iterator.next();
+            Iterator<EventHandle> eventHandleIterator = entry.getValue().iterator();
+            while(eventHandleIterator.hasNext())
+            {
+                if(eventHandleIterator.next().getMethodClass().equals(object))
+                    eventHandleIterator.remove();
+            }
         }
     }
 
+    /**
+     * Fire an event to all applicable event handles
+     * @param event the event to be fired
+     */
     public void fireEvent(Event event)
     {
-        Iterator<Map.Entry<Class, EventHandle>> iterator = eventHandlerList.iterator();
-        while(iterator.hasNext())
+        List<EventHandle> eventHandles;
+        if((eventHandles = eventHandleMap.get(event.getClass())) != null)
         {
-            Map.Entry<Class, EventHandle> entry = iterator.next();
-            if(entry.getKey().equals(event.getClass())) {
+            for(EventHandle eventHandle : eventHandles)
+            {
                 try {
-                    EventHandle eventHandle = entry.getValue();
-                    eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event);
-                } catch (IllegalAccessException | InvocationTargetException e)
+                    eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event );
+                } catch (InvocationTargetException | IllegalAccessException e)
                 {
                     e.printStackTrace();
                 }
