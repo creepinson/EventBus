@@ -25,6 +25,7 @@ public class EventManager {
             if(method.isAnnotationPresent(EventHandler.class))
             {
                 Map.Entry<Class, EventHandle> eventHandleEntry = new AbstractMap.SimpleEntry<Class, EventHandle>(method.getParameterTypes()[0], new EventHandle(method, object));
+                method.setAccessible(true);
                 eventHandlerList.add(eventHandleEntry);
             }
         }
@@ -37,6 +38,7 @@ public class EventManager {
             if(method.isAnnotationPresent(EventHandler.class) && method.getParameterTypes().length > 0 && method.getParameterTypes()[0].equals(eventClass))
             {
                 Map.Entry<Class, EventHandle> eventHandleEntry = new AbstractMap.SimpleEntry<Class, EventHandle>(method.getParameterTypes()[0], new EventHandle(method, object));
+                method.setAccessible(true);
                 eventHandlerList.add(eventHandleEntry);
             }
         }
@@ -62,7 +64,6 @@ public class EventManager {
             if(entry.getKey().equals(event.getClass())) {
                 try {
                     EventHandle eventHandle = entry.getValue();
-                    eventHandle.getMethod().setAccessible(true);
                     eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event);
                 } catch (IllegalAccessException | InvocationTargetException e)
                 {
