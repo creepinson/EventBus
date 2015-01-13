@@ -10,7 +10,7 @@ import java.util.*;
 
 public class EventManager {
 
-    private Map<Class<?>, List<EventHandle>> eventHandleMap = new HashMap<>();
+    private Map<Class<?extends Event>, List<EventHandle>> eventHandleMap = new HashMap<>();
 
     /**
      * Add an object as an event listener, this method will loop through the objects methods
@@ -41,7 +41,7 @@ public class EventManager {
      * @param object the object to register
      * @param eventClass the specific event class we want to filter for
      */
-    public void addSpecificEventListener(Object object, Class eventClass)
+    public void addSpecificEventListener(Object object, Class<?extends Event> eventClass)
     {
         for(Method method : object.getClass().getDeclaredMethods())
         {
@@ -65,10 +65,10 @@ public class EventManager {
      */
     public void removeEventListener(Object object)
     {
-        Iterator<Map.Entry<Class<?>, List<EventHandle>>> iterator = eventHandleMap.entrySet().iterator();
+        Iterator<Map.Entry<Class<?extends Event>, List<EventHandle>>> iterator = eventHandleMap.entrySet().iterator();
         while(iterator.hasNext())
         {
-            Map.Entry<Class<?>, List<EventHandle>> entry = iterator.next();
+            Map.Entry<Class<?extends Event>, List<EventHandle>> entry = iterator.next();
             Iterator<EventHandle> eventHandleIterator = entry.getValue().iterator();
             while(eventHandleIterator.hasNext())
             {
