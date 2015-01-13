@@ -3,7 +3,8 @@ package me.xerces.eventbus;
 import java.lang.reflect.Method;
 
 /**
- * Created by Crysk on 12/01/2015.
+ * The event handle which holds the method and method object
+ * @author Xerces
  */
 public class EventHandle {
 

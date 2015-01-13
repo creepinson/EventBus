@@ -3,7 +3,8 @@ package me.xerces.eventbus.test.utils;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Crysk on 12/01/2015.
+ * Time manager used for waiting for a set period of time or checking how long since the last update
+ * @author Xerces
  */
 public class TimeManager {
 

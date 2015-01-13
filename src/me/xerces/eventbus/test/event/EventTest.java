@@ -3,7 +3,8 @@ package me.xerces.eventbus.test.event;
 import me.xerces.eventbus.event.Event;
 
 /**
- * Created by Crysk on 12/01/2015.
+ * Test event
+ * @author Xerces
  */
 public class EventTest extends Event{
 }

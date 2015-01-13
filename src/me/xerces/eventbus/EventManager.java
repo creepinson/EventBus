@@ -8,9 +8,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * Created by Crysk on 12/01/2015.
- */
 public class EventManager {
 
     private Map<Class<?>, List<EventHandle>> eventHandleMap = new HashMap<>();

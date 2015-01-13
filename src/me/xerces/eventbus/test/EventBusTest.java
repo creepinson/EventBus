@@ -7,9 +7,7 @@ import me.xerces.eventbus.test.utils.TimeManager;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Crysk on 12/01/2015.
- */
+
 public class EventBusTest {
 
     public static void main(String[] args)
