@@ -31,12 +31,12 @@ public class EventBusTest {
     private int processedEvents = 0;
 
     @EventHandler
-    private void eventTest(final EventTest e)
+    private void eventTestHigh(final EventTest e)
     {
         processedEvents++;
         if(processedEvents % 100000 == 0)
         {
-            System.out.println(String.format("Processed %d amount of events...", processedEvents));
+            System.out.println(String.format("Processed %d amount of events.", processedEvents));
         }
     }
 

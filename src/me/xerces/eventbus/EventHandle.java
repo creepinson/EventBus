@@ -1,5 +1,7 @@
 package me.xerces.eventbus;
 
+import me.xerces.eventbus.annotation.EventHandler;
+
 import java.lang.reflect.Method;
 
 /**
@@ -12,10 +14,17 @@ public class EventHandle {
 
     private Object methodClass;
 
-    public EventHandle(Method method, Object methodClass)
+    private EventHandler.EventPriority priority;
+
+    public EventHandle(Method method, Object methodClass, EventHandler.EventPriority priority)
     {
         this.method = method;
         this.methodClass = methodClass;
+        this.priority = priority;
+    }
+
+    public EventHandler.EventPriority getPriority() {
+        return priority;
     }
 
     public Method getMethod() {
@@ -28,6 +37,6 @@ public class EventHandle {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof EventHandle && ((EventHandle) obj).getMethod() == method && ((EventHandle) obj).getMethodClass() == methodClass;
+        return obj instanceof EventHandle && ((EventHandle) obj).getMethod().equals(method) && ((EventHandle) obj).getMethodClass().equals(methodClass);
     }
 }

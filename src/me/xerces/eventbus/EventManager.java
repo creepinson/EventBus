@@ -21,14 +21,17 @@ public class EventManager {
     {
         for(Method method : object.getClass().getDeclaredMethods())
         {
-            if(method.isAnnotationPresent(EventHandler.class))
+            if(method.isAnnotationPresent(EventHandler.class) && method.getParameterTypes().length > 0)
             {
+                EventHandler eventHandler = (EventHandler)method.getDeclaredAnnotations()[0];
                 if(eventHandleMap.get(method.getParameterTypes()[0]) != null)
                 {
-                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object));
+                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object, eventHandler.priority()));
+                    sortArrayList(eventHandleMap.get(method.getParameterTypes()[0]));
                 } else {
                     List<EventHandle> eventHandles = new ArrayList<>();
-                    eventHandles.add(new EventHandle(method, object));
+                    eventHandles.add(new EventHandle(method, object, eventHandler.priority()));
+                    eventHandleMap.put((Class<?extends Event>)method.getParameterTypes()[0], eventHandles);
                 }
                 method.setAccessible(true);
             }
@@ -47,16 +50,35 @@ public class EventManager {
         {
             if(method.isAnnotationPresent(EventHandler.class) && method.getParameterTypes().length > 0 && method.getParameterTypes()[0].equals(eventClass))
             {
+                EventHandler eventHandler = (EventHandler)method.getDeclaredAnnotations()[0];
                 if(eventHandleMap.get(method.getParameterTypes()[0]) != null)
                 {
-                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object));
+                    eventHandleMap.get(method.getParameterTypes()[0]).add(new EventHandle(method, object, eventHandler.priority()));
+                    sortArrayList(eventHandleMap.get(method.getParameterTypes()[0]));
                 } else {
                     List<EventHandle> eventHandles = new ArrayList<>();
-                    eventHandles.add(new EventHandle(method, object));
+                    eventHandles.add(new EventHandle(method, object, eventHandler.priority()));
+                    eventHandleMap.put((Class<?extends Event>)method.getParameterTypes()[0], eventHandles);
                 }
                 method.setAccessible(true);
             }
         }
+    }
+
+    /**
+     * Sort the ArrayList by the Priority making sure its Highest - Lowest
+     * @param arrayList the ArrayList to sort
+     */
+    private void sortArrayList(List<EventHandle> arrayList)
+    {
+        Collections.sort(arrayList, new Comparator() {
+            @Override
+            public int compare(Object objOne, Object objTwo) {
+                EventHandle eventHandleFirst = (EventHandle) objOne;
+                EventHandle eventHandleSecond = (EventHandle) objTwo;
+                return eventHandleSecond.getPriority().ordinal() - eventHandleFirst.getPriority().ordinal();
+            }
+        });
     }
 
     /**
@@ -89,11 +111,12 @@ public class EventManager {
         {
             for(EventHandle eventHandle : eventHandles)
             {
-                try {
-                    eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event );
-                } catch (InvocationTargetException | IllegalAccessException e)
-                {
-                    e.printStackTrace();
+                if(!event.isCancelled() && eventHandle.getPriority() != EventHandler.EventPriority.MONITOR) {
+                    try {
+                        eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event);
+                    } catch (InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
