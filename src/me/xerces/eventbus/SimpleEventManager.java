@@ -1,19 +1,18 @@
 package me.xerces.eventbus;
 
 import me.xerces.eventbus.annotation.EventHandler;
-import me.xerces.eventbus.event.Event;
+import me.xerces.eventbus.events.Event;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class EventManager {
+public class SimpleEventManager implements IEventManager{
 
     private Map<Class<?extends Event>, List<EventHandle>> eventHandleMap = new HashMap<>();
 
     /**
-     * Add an object as an event listener, this method will loop through the objects methods
+     * Add an object as an events listener, this method will loop through the objects methods
      * and if the method has {@link me.xerces.eventbus.annotation.EventHandler} present then it will add it has an Event Handler
      * @param object the object to register
      */
@@ -39,10 +38,10 @@ public class EventManager {
     }
 
     /**
-     * Add an object as an event listener, this method will loop through the objects methods
+     * Add an object as an events listener, this method will loop through the objects methods
      * and if the method has {@link me.xerces.eventbus.annotation.EventHandler} present then it will add it has an Event Handler
      * @param object the object to register
-     * @param eventClass the specific event class we want to filter for
+     * @param eventClass the specific events class we want to filter for
      */
     public void addSpecificEventListener(Object object, Class<?extends Event> eventClass)
     {
@@ -83,7 +82,7 @@ public class EventManager {
 
     /**
      * Removes all methods in the object from the {@link #eventHandleMap}
-     * @param object
+     * @param object the object of which you want the listeners removed from
      */
     public void removeEventListener(Object object)
     {
@@ -101,10 +100,10 @@ public class EventManager {
     }
 
     /**
-     * Fire an event to all applicable event handles
-     * @param event the event to be fired
+     * Fire an events to all applicable events handles
+     * @param event the events to be fired
      */
-    public void fireEvent(Event event)
+    public <T extends Event> void fireEvent(T event)
     {
         List<EventHandle> eventHandles;
         if((eventHandles = eventHandleMap.get(event.getClass())) != null)

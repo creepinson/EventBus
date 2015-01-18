@@ -5,7 +5,7 @@ import me.xerces.eventbus.annotation.EventHandler;
 import java.lang.reflect.Method;
 
 /**
- * The event handle which holds the method and method object
+ * The events handle which holds the method and method object
  * @author Xerces
  */
 public class EventHandle {
