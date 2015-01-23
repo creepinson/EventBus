@@ -103,7 +103,7 @@ public class SimpleEventManager implements IEventManager{
      * Fire an events to all applicable events handles
      * @param event the events to be fired
      */
-    public <T extends Event> void fireEvent(T event)
+    public void fireEvent(Event event)
     {
         List<EventHandle> eventHandles;
         if((eventHandles = eventHandleMap.get(event.getClass())) != null)
