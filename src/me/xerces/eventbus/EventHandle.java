@@ -1,9 +1,10 @@
 package me.xerces.eventbus;
 
 import me.xerces.eventbus.annotation.EventHandler;
+import me.xerces.eventbus.annotation.EventPriority;
 
 import java.lang.reflect.Method;
-import me.xerces.eventbus.annotation.EventPriority;
+
 
 /**
  * The events handle which holds the method and method object
