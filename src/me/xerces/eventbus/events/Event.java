@@ -1,5 +1,9 @@
 package me.xerces.eventbus.events;
 
+import me.xerces.eventbus.EventHandle;
+
+import java.util.List;
+
 /**
  * The Event class used as a base for other events
  * @author Xerces
@@ -7,6 +11,8 @@ package me.xerces.eventbus.events;
 public abstract class Event {
 
     private boolean isCancelled;
+
+    public abstract List<EventHandle> getHandlers();
 
     /**
      * setCancelled Will set if the events is cancelled or not

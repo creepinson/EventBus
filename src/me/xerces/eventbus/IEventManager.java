@@ -14,6 +14,6 @@ public interface IEventManager {
 
     public void removeEventListener(Object object);
 
-    public <T extends Event> void fireEvent(T event);
+    public void fireEvent(Event event);
 
 }

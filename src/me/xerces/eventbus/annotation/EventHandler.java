@@ -1,5 +1,7 @@
 package me.xerces.eventbus.annotation;
 
+import me.xerces.eventbus.filter.Filter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
