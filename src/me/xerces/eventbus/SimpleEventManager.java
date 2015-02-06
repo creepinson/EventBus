@@ -110,7 +110,7 @@ public class SimpleEventManager implements IEventManager{
         {
             for(EventHandle eventHandle : eventHandles)
             {
-                if(!event.isCancelled() && eventHandle.getPriority() != EventHandler.EventPriority.MONITOR) {
+                if(!event.isCancelled() && eventHandle.getPriority() != EventPriority.MONITOR) {
                     try {
                         eventHandle.getMethod().invoke(eventHandle.getMethodClass(), event);
                     } catch (InvocationTargetException | IllegalAccessException e) {
