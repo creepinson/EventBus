@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventHandler {
 
-    enum  EventPriority { MONITOR, LOW, MEDIUM, HIGH};
-
     EventPriority priority() default EventPriority.LOW;
+    
 }
