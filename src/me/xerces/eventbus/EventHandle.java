@@ -3,6 +3,7 @@ package me.xerces.eventbus;
 import me.xerces.eventbus.annotation.EventHandler;
 
 import java.lang.reflect.Method;
+import me.xerces.eventbus.annotation.EventPriority;
 
 /**
  * The events handle which holds the method and method object
@@ -14,16 +15,16 @@ public class EventHandle {
 
     private Object methodClass;
 
-    private EventHandler.EventPriority priority;
+    private EventPriority priority;
 
-    public EventHandle(Method method, Object methodClass, EventHandler.EventPriority priority)
+    public EventHandle(Method method, Object methodClass, EventPriority priority)
     {
         this.method = method;
         this.methodClass = methodClass;
         this.priority = priority;
     }
 
-    public EventHandler.EventPriority getPriority() {
+    public EventPriority getPriority() {
         return priority;
     }
 
