@@ -2,6 +2,7 @@ package me.xerces.eventbus;
 
 import me.xerces.eventbus.annotation.EventHandler;
 import me.xerces.eventbus.events.Event;
+import me.xerces.eventbus.annotation.EventPriority;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
