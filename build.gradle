@@ -4,16 +4,20 @@ plugins {
     id 'signing'
 }
 
-group = "dev.throwouterror.eventbus"
+group = "dev.throwouterror"
 version = "1.0.0"
 
 repositories {
+    maven {
+        url "https://jitpack.io"
+    }
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    api('com.github.ReactiveX:RxKotlin:3.x-SNAPSHOT')
+    api('org.json:json:20200518')
 }
 
 publishing {
@@ -21,7 +25,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'dev.throwouterror'
             artifactId = 'event-bus'
-            version = '1.0.0'
+            version = project.version
             from components.java
         }
 
