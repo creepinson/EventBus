@@ -1,6 +1,5 @@
 package dev.throwouterror.eventbus.test
 
-import dev.throwouterror.eventbus.EventBus
 import dev.throwouterror.eventbus.SimpleEventBus
 import dev.throwouterror.eventbus.event.Event
 import dev.throwouterror.eventbus.observeEvent
@@ -9,7 +8,7 @@ import java.util.concurrent.TimeUnit
 class EventBusTest {
     companion object {
         @JvmStatic
-        fun main(args: Array<String>) {
+        fun main() {
             EventBusTest()
         }
     }
@@ -27,6 +26,5 @@ class EventBusTest {
             println("Receieved event ${it.type}")
         }
         eventManager.fireEvent(Event("test2"))
-
     }
 }

@@ -16,6 +16,13 @@
  *.ipr
 .idea
 
+.classpath
+.project
+.metadata
+
+# Deepcode
+.dccache
+
 # CMake
 cmake-build-*/
 
