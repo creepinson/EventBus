@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
     id 'maven-publish'
     id 'signing'
 }
@@ -17,7 +17,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     api('com.github.ReactiveX:RxKotlin:3.x-SNAPSHOT')
-    api('org.json:json:20201115')
+    api('org.json:json:20210307')
 }
 
 publishing {
